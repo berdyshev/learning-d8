@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8">
 
-  <title>DrupalCon Prague 2013 sessions report</title>
+  <title>Learning Drupal 8</title>
 
   <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
 
-  <meta name="description" content="Report by some sessions which I attended during DrupalCon Prague 2013">
+  <meta name="description" content="Learning Drupal 8 on dummy module">
   <meta name="author" content="Artem Berdyshev (BerdArt)">
 
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -25,495 +25,245 @@
   <!-- If the query includes 'print-pdf', use the PDF print sheet -->
   <script>
      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
- </script>
+  </script>
 
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+</head>
 
-	<body>
+<body>
 
-		<div class="reveal">
+	<div class="reveal">
 
-			<!-- Any section element inside of this container is displayed as a slide -->
-            <div class="slides">
+		<!-- Any section element inside of this container is displayed as a slide -->
+        <div class="slides">
+            <section>
+                <h1 class="absolute-element">Learning Drupal 8</h1>
+            </section>
+            <section>
+                <h2>New directory structure</h2>
+                <ul>
+                    <li>Do not touch /core directory</li>
+                    <li>Modules should be stored in /modules</li>
+                    <li>Themes should be stored in /themes</li>
+                    <li>You still can use sites/[site-alias] directory for multisiting</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Define you module</h2>
+                <ul>
+                    <li>Info file in YAML format</li>
+                    <li>Remove all 'files' references</li>
+                    <li>Add <code>type: module</code> item</li>
+                </ul>
+            </section>
+
+            <!-- ROUTES -->
+            <section>
                 <section>
-                    <h1 class="absolute-element">DrupalCon <br>Prague 2013</h1>
-                    <p  class="absolute-element fragment" data-fragment-index="0">
-                        <img src="http://farm4.staticflickr.com/3817/9918287984_01762bfa19_c.jpg" />
-                    </p>
+                    <h2>Routes</h2>
+                    <ul>
+                        <li>mymodule.routing.yml</li>
+                        <li>Path to controller (form, etc) mapping</li>
+                        <li>Parameters (cast argument to certain type)</li>
+                        <li>Access checks</li>
+                    </ul>
                 </section>
                 <section>
-                    <section>
-                        <h2>Keynote: State of Drupal 8</h2>
-                        <p>by Dries Buytaert</p>
-                    </section>
-                    <section>
-                        <h2>Drupal 8 advantages</h2>
-                        <ul>
-                            <li>Helps individuals build a dream</li>
-                            <li>Gives small organizations a big voice</li>
-                            <li>Gives enterprises a new idea</li>
-                            <li>Inspires wonder and delight</li>
-                            <li>Admits no boundaries</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>6 initiatives</h2>
-                        <ul>
-                            <li>Configuration management</li>
-                            <li>Mobile (HTML5, responsive, toolbar)</li>
-                            <li>Blocks++</li>
-                            <li>Multilingual</li>
-                            <li>Views</li>
-                            <li>WebServers</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Other important features</h2>
-                        <ul>
-                            <li>Schema.org integration</li>
-                            <li>New theme system (Twig)</li>
-                            <li>Semantic HTML5 fields</li>
-                            <li>Re-designed administrative pages</li>
-                            <li>and much more features</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Improvements for small organizations</h2>
-                        <ul>
-                            <li>All the basics are installed</li>
-                            <li>Help (tour)</li>
-                            <li>Finding things is quick (toolbar)</li>
-                            <li>Drag'n'drop</li>
-                            <li>Site create is easy (installer, views, etc)</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Frontend developer</h2>
-                        <ul>
-                            <li>Better markup (clean)</li>
-                            <li>Modern theming (with HTML5)</li>
-                            <li>Standard interactions like modals, dropbuttons</li>
-                            <li>Better libraries (backbone, underscore)</li>
-                            <li>Natively responsive</li>
-                            <li>Themers don't need to know PHP</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Marketing manager</h2>
-                        <ul>
-                            <li>Native apps</li>
-                            <li>Multingual built-in</li>
-                            <li>Integration with third-party services (REST)</li>
-                            <li>Structured content that is friendly</li>
-                            <li>Responsive preview</li>
-                            <li>Effortless authoring</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Engineering director</h2>
-                        <ul>
-                            <li>Configuration in file</li>
-                            <li>"Proudly Found Elsewhere" (Guzzle)</li>
-                            <li>Object oriented modern code</li>
-                            <li>More versatile framework (Symfony)</li>
-                            <li>Scalability (noSQL, blocks)</li>
-                            <li>Unit testability (PHPUnit)</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Goals</h2>
-                        <ul>
-                            <li>Make it faster (performance)</li>
-                            <li>Fix the developer experience (learning curve)</li>
-                            <li>Simplify upgrading</li>
-                        </ul>
-                        <p>&nbsp;</p>
-                        <h2>Terms</h2>
-                        <ul>
-                            <li>Beta 1 late 2013­</li>
-                            <li>RC1 early 2014</li>
-                            <li>It's ready when it's ready</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>There is still time to get involved!</h2>
-                        <div>&nbsp;</div>
-                        <div class="fragment">
-                            <p>Now it's time to start upgrading modules and give fast feedback on APIs — it can be changed yet.</p>
-                            <p>Time to actual upgrade modules will be next year.</p>
-                        </div>
-                    </section>
+                <h2>Basic routes</h2>
+                    <p>7.x</p>
+<pre><code>function mymodule_menu() {
+  $items['mymodule'] = array(
+    'title' => 'MyModule list',
+    'page callback' => 'mymodule_list',
+    'access arguments' => 'view mymodule list',
+    'type' => MENU_CALLBACK,
+   ); 
+}</code></pre>
+                    <p>8.x</p>
+<pre><code>mymodule.list:
+  pattern: '/mymodule'
+  defaults:
+    _content: '\Drupal\mymodule\Controller\MymoduleController::list'
+  requirements:
+    _permission: 'view mymodule list'</code></pre>
+                </section>
+                
+                <section>
+                    <h2>Param converter</h2>
+                    <p>Convert {param} to something</p>
+                    <p>Example: node/1 => $node</p>
+<pre><code>paramconverter_test_node_set_parent:
+  pattern: '/paramconverter_test/node/{node}/set/parent/{parent}'
+  requirements:
+    _access: 'TRUE'
+  defaults:
+    _content: '\Drupal\paramconverter_test\TestControllers::testNodeSetParent'
+  options:
+    parameters:
+      parent:
+        type: 'entity:node'</code></pre>
+                    <p>You can define custom converter by defining service with tag 'paramconverter'</p>
+                </section>
+            </section>
+
+            <!-- ACCESS CHECK -->
+            <section>
+                <section>
+                    <h2>Access check</h2>
+                    <ul>
+                        <li>Routes define requirements</li>
+                        <li>Multiple access checks can run on a single route</li>
+                        <li>Mode: ALL or ANY</li>
+                        <li>Re-usable access checkers</li>
+                        <li>Custom checker: define service with tag 'access check' which implements <code>StaticAccessCheckInterface</code></li>
+                    </ul>
                 </section>
                 <section>
-                    <h2>Everything is Commerce:<br />Beyond the Shopping Cart</h2>
-                    <p>by Scott Dahlgren and Ryan Szrama (rszrama)</p>
+                    <h2>Example</h3>
+<pre><code>edit_entity_save:
+  pattern: '/edit/entity/{entity_type}/{entity}'
+  defaults:
+    _controller: '\Drupal\edit\EditController::entitySave'
+  options:
+    _access_mode: 'ALL'
+  requirements:
+    _permission: 'access in-place editing'
+    _access_edit_entity: 'TRUE'</code></pre>
                 </section>
                 <section>
-                    <section>
-                        <h2>Commerce Without Borders</h2>
-                        <p>by Bojan Zivanovic (bojanz)</p>
-                    </section>
-                    <section>
-                        <h2>Drupal Commerce</h2>
-                        <ul>
-                            <li>Drupal commerce is minimalistic and flexible  - you can use modules you need, and other still be disabled (see Cartier webstore as example)</li>
-                            <li>DC uses rules for business logic</li>
-                            <li>DC relies on 'essential contribs' and distributions to complete the experience</li>
-                        </ul>
-                    </section>
-                    <section data-transition="linear">
-                        <h2>Use Case</h2>
-                        <h3>Requirements</h3>
-                        <ul>
-                            <li>multilingual</li>
-                            <li>multicurrencies</li>
-                            <li>figure out where custimers are coming from</li>
-                            <li>choose correct payment provider</li>
-                            <li>
-                                VAT (value added tax)
-                                <ul>
-                                    <li>what is VAT for my country</li>
-                                    <li>does shipping have VAT?</li>
-                                    <li>do discounts have VAT?</li>
-                                    <li>not everyone pays VAT</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </section>
-                    <section data-transition="linear">
-                        <h2>Use Case</h2>
-                        <h3>Solutions</h3>
-                        <ul>
-                            <li>Price field per currency</li>
-                            <li>Price rule that selects the right price field</li>
-                            <li>Commerce VAT &amp; Commerce European Union VAT modules solves (handles):
-                                <ul>
-                                    <li>rate changes</li>
-                                    <li>shipping</li>
-                                    <li>predefine all rates</li>
-                                    <li>B2B</li>
-                                    <li>VOES</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </section>
+                    <h2>Re-usable requirements</h2>
+                    <p>Check if a user has a permission</p>
+                    <pre><code>_permission: 'my permission name'</code></pre>
+                    <p>Check if a user has a role</p>
+                    <pre><code>_role: 'role1+role2' (AND)
+_role: 'role1, role2' (OR)</code></pre>
+                    <p>Check if user is logged in</p>
+                    <pre><code>_user_is_logged_in: 'TRUE'</code></pre>
+                    <p>Allow everyone</p>
+                    <pre><code>_access: 'TRUE'</code></pre>
+                </section>
+            </section>
+
+            <!-- MENU LINKS -->
+            <section>
+                <section>
+                    <h2>Menu links</h2>
+                    <p>New <code>hook_default_menu_links()</code> (not yet in core: <a href="https://drupal.org/node/2047633">#2047633</a>)</p>
+                    <p>Until that issue is committed: keep hook_menu()</p>
+                    <p>Simple structure: link path, title, description, parent</p>
                 </section>
                 <section>
-                    <h2>Fix me if you can</h2>
-                    <p>by nod_ and other Acqua's people</p>
+                    <h2>Example</h2>
+<pre><code>function node_menu() {
+    $items['admin/structure/types'] = array(
+    'title' => 'Content types',
+    'description' => 'Manage content types, including default status, front page promotion, comment settings, etc.',
+    'route_name' => 'node.overview_types',
+  );
+  $items['admin/structure/types/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+return $items;
+} </code></pre>
+                </section>
+            </section>
+
+            <!-- TITLE -->
+            <section>
+                <h2>Title</h2>
+                <p>drupal_set_title() will gone soon</p>
+                <h3>Replacement</h3>
+                <ul>
+                    <li>_title in route definition</li>
+                    <li>_title_callback in route definition</li>
+                    <li>#title in render arrays (highest priority)</li>
+                </ul>
+                <p>See more examples in this <a href="https://drupal.org/node/2067859">change notice</a></p>
+            </section>
+
+            <!-- CONTROLLERS -->
+            <section>
+                <section>
+                    <h2>Controllers</h2>
+                    <p>Handle the request and return response</p>
                 </section>
                 <section>
-                    <section>
-                        <h2>Route planning with Drupal + OpenLayers and powering Phonegap mobile apps</h2>
-                        <p>by Peter Ponya</p>
-                    </section>
-                    <section>
-                        <h2>Technical details</h2>
-                        <ul>
-                            <li>OpenLayers for map rendering</li>
-                            <li>Leaflit for route rendering</li>
-                            <li>Google Maps API for route definition (from A to B)</li>
-                            <li>PhoneGap for mobile app</li>
-                            <li>All data is stored in localStorage in mobile app for offline access</li>
-                        </ul>
-                    </section>
+                    <h2>Example</h2>
+                    <p>7.x</p>
+<pre><code>function mymodule_page() {
+return t('My module list page');
+}</code></pre></p>
+                <p>8.x</p>
+                <p>
+<pre><code>class MymoduleController extends ControllerBase {
+    public function list() {
+        return $this->t('My module list page');
+    }
+}</code></pre>
                 </section>
                 <section>
-                    <section>
-                        <h2>Drush optimizations for your Development Workflow</h2>
-                        <p>by Greg Anderson (greg.1.anderson)</p>
-                        <p>Moshe Weitzman (moshe weitzman)</p>
-                        <p>and others</p>
-                    </section>
-                    <section>
-                        <ul>
-                            <li>
-                                Drush moved to github: <a href="https://github.com/drush-ops/drush" target="_blank" rel="noreferrer">https://github.com/drush-ops/drush</a>
-                            </li>
-                            <li class="fragment" data-fragment-index="0">
-                                Drush master branch support Drupal 8
-                            </li>
-                            <li class="fragment" data-fragment-index="1">
-                                Drush master has new command: <code>drush drushify</code> which lets you create your own commands with different formatting, arguments, etc
-                            </li>
-                            <li class="fragment" data-fragment-index="2">
-                                <span>Drush QD command for quick drupal installation using SQLite DB (if possible) and running php built-in web-server (if possible).</span>
-                            </li>
-                            <li class="fragment" data-fragment-index="3">
-                                <span>Drush hooks let execute post installation scripts (to download library for example)</span>
-                            </li>
-                            <li class="fragment" data-fragment-index="4">
-                                <span>Sync configuration (modules, permissions, sanitize)</span>
-                            </li>
-                            <li class="fragment" data-fragment-index="5">
-                                <span>Contribute drush integration for contrib modules!</span>
-                            </li>
-                        </ul>
-                    </section>
+                    <h2>Responses</h2>
+                    <ul>
+                        <li>Response (default, just return build array or string)</li>
+                        <li>JsonResponse (instead of <code>drupal_json_output()</code>)</li>
+                        <li>AjaxResponse</li>
+                        <li>RedirectResponse (instead of <code>drupal_goto()</code>)</li>
+                    </ul>
+                    <h3>Example</h3>
+<pre><code>class MymoduleController extends ControllerBase {
+    public function list() {
+        $data = array('message' => $this->t('My module list page'));
+        return new JsonResponse($data);
+    }
+}</code></pre>                    
                 </section>
-                <section>
-                    <section>
-                        <h2>Building amazing searches with Search API</h2>
-                        <p>by drunken monkey</p>
-                    </section>
-                    <section>
-                        <h2>Search servers</h2>
-                        <div class="fragment" data-fragment-index="0">
-                            <ul>
-                                <li>
-                                    <span>database search</span>
-                                    <br>
-                                </li>
-                                <li>
-                                    <span>ApacheSolr search</span>
-                                    <br>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>&nbsp;</div>
-                        <div  class="fragment" data-fragment-index="1">
-                            <h3 style="text-align: center; ">ApacheSolr server security</h3>
-                            <ul>
-                                <li>Protect Solr server from outside access</li>
-                                <li>Add hash to path, or</li>
-                                <li>Block access with firewall, or</li>
-                                <li>Use HTTP authentication</li>
-                            </ul>
-                        </div>
-                    </section>
-                    <section>
-                        <h2>Index configuration</h2>
-                        <div>
-                            <ul>
-                                <li class="fragment" data-fragment-index="0">Field index configuration
-                                    <ul>
-                                        <li>adding fields to index</li>
-                                        <li>type of indexes</li>
-                                        <li>difference between string and fulltext</li>
-                                    </ul>
-                                </li>
-                                <li class="fragment" data-fragment-index="1">Workflow configuration
-                                    <ul>
-                                        <li>Display unpublish nodes</li>
-                                        <li>Index hierarchical data</li>
-                                        <li>etc</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </section>
-                    <section>
-                        <h3>Display searches</h3>
-                        <div>
-                            <ul>
-                                <li>
-                                    Search pages (simple, quick, low flexibilty)
-                                </li>
-                                <li>
-                                    Search views
-                                </li>
-                            </ul>
-                        </div>
-                        <div>&nbsp;</div>
-                        <div class="fragment" data-fragment-index="0">
-                            <h3>Facets</h3>
-                            <div>
-                                <ul>
-                                    <li>"facet API" + "Search facets"</li>
-                                    <li>Incredibly flexible</li>
-                                    <li>Any type of search (but only some backends)</li>
-                                </ul>
-                            </div>
-                        </div>
+            </section>
+        </div>
 
+    </div>
 
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
 
-                    </section>
-                    <section>
-                        <h2>Additional modules</h2>
-                        <div>
-                            <ul>
-                                <li>
-                                    <b>Autocomplete</b> module — suggestions for search fields based on results
-                                </li>
-                                <li>
-                                    <b>Spellcheck</b> module — adds optional spellchecking (only for Solr)</li>
-                                    <li>
-                                        <b>Saved searches</b> module — allows users save their searches (notify new results, any type of search)</li>
-                                        <li>
-                                            <b>Search API Location</b> — integrates with Geofield: filter, sort and facet by proximity</li>
-                                            <li>
-                                                <b>Search API multi-index searches</b> — search by some indexes in the same time</li>
-                                                <li>
-                                                    <b>Facet API Pretty Paths </b> — pretty path for search results with filter criterias</li>
-                                                </ul>
-                                            </div>
-                                        </section>
-                                    </section>
-                                    <section>
-                                        <section>
-                                            <h2>Your first Drupal 8 module</h2>
-                                            <p>by Larry Garfield (Crell)</p>
-                                            <p>Robin Barre (robeano)</p>
-                                            <p>&nbsp;</p>
-                                            <p>&nbsp;</p>
-                                            <p>&nbsp;</p>
-                                            <h2>Upgrade Your module to Drupal 8</h2>
-                                            <p>by Angie Byron (webchick)</p>
-                                            <p>Alex Bronstein (effulgentsia)</p>
-                                            <p>Jess (xjm)</p>
-                                        </section>
-                                        <section>
-                                            <h2>Changes</h2>
-                                            <div>
-                                                <ul>
-                                                    <li>
-                                                        YAML files for confugration (info, routing, services, etc)
-                                                    </li>
-                                                    <li class="fragment" data-fragment-index="0">New routing system<ul>
-                                                        <li>Route definition in YAML file</li>
-                                                        <li>hook_menu() for default menu links</li>
-                                                    </ul>
-                                                </li>
-                                                <li class="fragment" data-fragment-index="1">Conrollers and Response (JsonResponse)</li>
-                                                <li class="fragment" data-fragment-index="2">Forms<ul>
-                                                    <li>Form Controller</li>
-                                                    <li>Form Controller for configuration form</li>
-                                                </ul>
-                                            </li>
-                                            <li class="fragment" data-fragment-index="3">Theming (now with Twig!)</li>
-                                            <li class="fragment" data-fragment-index="4">CMI<ul>
-                                                <li>definition stores in 'config/schema/*.yml'</li>
-                                                <li>default values stored in 'config/*.yml'</li>
-                                            </ul>
-                                        </li>
-                                        <li class="fragment" data-fragment-index="5">Dependency Injection</li>
+    <script>
 
-                                    </ul>
-                                </div>
+		// Full list of configuration options available here:
+		// https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			controls: true,
+			progress: true,
+			history: true,
+			center: true,
 
+			theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+			transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
-                            </section>
-                        </section>
-                        <section>
-                            <section>
-                                <h2>Upgrading your JS to Drupal 8</h2>
-                                <p>by Theodore Biadala (nod_)</p>
-                            </section>
-                            <section>
-                                <h2>Changes in JS of Drupal 8</h2>
-                                <div>
-                                    <ul>
-                                        <li>drupal_add_js() doesn't work any more, we should use now #attached<br>
-                                        </li>
-                                        <li class="fragment" data-fragment-index="0">scripts[] doesn't work any more, we should use hook_library_info()<br>
-                                            <pre><code data-trim contenteditable>
-function my_module_library_info() {
-    $libraries['myscript'] = array(
-    'js' => array('script.js'),
-    'dependencies' => array(array('core.ajax')),
-    );
-}  
-                                            </code></pre>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div style="text-align: left;" class="fragment" data-fragment-index="1">Issue <a href="http://drupal.org/node/1996238">#1996238</a>: Replace hook_library_info() by *.library.yml file</div>
-                            </section>
-                            <section>
-                                <h2>Drupal 7 problems</h2>
-                                <ul>
-                                    <li>jQuery 1.4.4</li>
-                                    <li>jQuery + drupal.js on all pages</li>
-                                    <li>core js breaks easily</li>
-                                    <li>contrib JS is not great</li>
-                                </ul>
-                                <p>&nbsp;</p>
-                                <p>&nbsp;</p>
-                                <div class="fragment">
-                                <h2>Drupal 8 solutions</h2>
-                                    <ul>
-                                        <li>Update all third party JS libraries</li>
-                                        <li>Declare all scripts dependencies</li>
-                                        <li>Strict mode &amp; JSHint</li>
-                                        <li>Coding standards</li>
-                                    </ul>
-                                </div>
-                            </section>
-                            <section>
-                                <h2>New libraries</h2>
-                                <ul>
-                                    <li>jQuery 2, CKeditor</li>
-                                    <li>Backbone, Underscore, Modernizr</li>
-                                    <li>Joyride (used in Tour module)</li>
-                                </ul>
-                                <p> &nbsp; </p>
-                                <div class="fragment" data-fragment-index="0">
-                                    <h2>New APIs</h2>
-                                    <ul>
-                                        <li><code>Drupal.announce(text,priority)</code> — for screen readers</li>
-                                        <li><code>Drupal.displace(broadcast)</code> — viewport offset distances</li>
-                                        <li><code>Drupal.debounce(func, wait)</code></li>
-                                        <li><code>Drupal.dialog(element, options)</code> — jQuery UI Dialog</li>
-                                    </ul>
-                                </div>
-                                <div>&nbsp;</div>
-                                <div class="fragment" data-fragment-index="1">
-                                    <p><b>New features</b>: Responsive tables, Responsive images, Quick edit, many more...</p>
-                                </div>
-                            </section>
-                        </section>
-                        <section>
-                            <h2>Panopoly: Building a Powerful <br /> Base Distribution</h2>
-                            <p>by Matt Cheney (populist)</p>
-                        </section>
-                    </div>
+			// Optional libraries used to extend on reveal.js
+			dependencies: [
+           { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+           { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+           { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+           { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+           { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+           { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+           ]
+       });
 
+    </script>
 
-                </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-                <script src="lib/js/head.min.js"></script>
-                <script src="js/reveal.min.js"></script>
+      ga('create', 'UA-44541841-1', 'berdart.github.io');
+      ga('send', 'pageview');
 
-                <script>
-
-			// Full list of configuration options available here:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
-
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
-
-				// Optional libraries used to extend on reveal.js
-				dependencies: [
-               { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-               { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-               { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-               { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-               { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-               { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-               ]
-           });
-
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-44541841-1', 'berdart.github.io');
-  ga('send', 'pageview');
-
-</script>
+    </script>
 
 </body>
 </html>
