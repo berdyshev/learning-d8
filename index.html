@@ -221,6 +221,243 @@ return t('My module list page');
 }</code></pre>                    
                 </section>
             </section>
+
+            <!-- Configuration management -->
+            <section>
+                <section>
+                    <h2>Configuration management initiative</h2>
+                    <h2>(CMI)</h2>
+                </section>
+                <section>
+                    <h2>CMI</h2>
+                    <ul>
+                        <li>Configuration is everything users and editors do not write</li>
+                        <li>
+                            Usual Suspects:
+                            <ul>
+                                <li>views</li>
+                                <li>content types</li>
+                                <li>views modes</li>
+                                <li>image styles</li>
+                                <li>permissions</li>
+                                <li>settings</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Config in the Files!</h2>
+                    <ul>
+                        <li>eliminated 50 tables from the drupal db</li>
+                        <li>writes directly to files (YAML files) no the db</li>
+                        <li>translatable</li>
+                    </ul>
+<pre><code class="yml">type: article
+uuid: 38fcdfbf-92a0-43d3-af30-8395cba668d4
+name: Article
+description: 'Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.'
+help: ''
+has_title: '1'
+title_label: Title
+settings:
+  node:
+    preview: '1'
+    options:
+      status: status
+      promote: promote
+      sticky: '0'
+      revision: '0'
+    submitted: '1'
+status: '1'
+langcode: en</code></pre>
+                </section>
+            </section>
+
+            <!-- FORMS and CONFIGURATION -->
+            <section>
+                <section>
+                    <h2>Forms and Configuration</h2>
+                </section>
+                <section>
+                    <h2>Forms</h2>
+                    <ul>
+                        <li>FormInterface
+                            <ul>
+                                <li>buildForm</li>
+                                <li>validateForm</li>
+                                <li>submitForm</li>
+                            </ul>
+                        </li>
+                        <li>Extend FormBase or ConfigFormBase</li>
+                        <li>For route definition specify Class name (not method)</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Configuration schema</h2>
+                    <pre><code>mymodule/config/schema/mymodule.settings.yml</code></pre>
+<pre><code>mymodule.settings:
+    type: mapping
+    label: 'MyModule settings'
+    mapping:
+        name:
+            type: string
+            label: "Full Name"
+        age:
+            type: integer
+            label: 'Age'</code></pre>
+                </section>
+                <section>
+                    <h2>Default values for settings</h2>
+                    <p>same file name, different location</p>
+                    <pre><code>mymodule/config/mymodule.settings.yml</code></pre>
+                    <pre><code>name: 'John Doe'
+age: 40</code></pre>
+                </section>
+                <section>
+                    <h2>ConfigFormBase</h2>
+                    <pre><code>mymodule/lib/Drupal/Form/SettingsForm.php</code></pre>
+                    <pre><code>
+class SettingsForm extends ConfigFormBase {
+
+  protected $config;
+
+  public function __construct(Config $config) {
+    $this->config = $config;
+  }
+
+  public static function create(ConfigFactory $factory) {
+    return new static(
+      $factory->get('mymodule.settings')
+    );
+  }
+
+  public function getFormID() {
+    return 'mymodule_settings';
+  }
+}
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>SettingsForm::buildForm()</h2>
+                    <pre><code>
+public function buildForm(array $form, array &$form_state) {
+
+    $form['name'] = array(
+      '#title' => t('Name'),
+      '#description' => t('What is your name?'),
+      '#type' => 'textfield',
+      '#default_value' => $this->config->get('name'),
+    );
+
+    $form['needy'] = array(
+      '#title' => t('Age'),
+      '#description' => t('What is your age'),
+      '#type' => 'range',
+      '#step' => 1,
+      '#min' => 18,
+      '#max' => 60,
+      '#default_value' => $this->config->get('age'),
+    );
+
+    return parent::buildForm($form, $form_state);
+}
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>SettingsForm::submitForm()</h2>
+                    <pre><code>
+public function submitForm(array &$form, array &$form_state) {
+    parent::submitForm($form, $form_state);
+
+    $this->config->set('name', $form_state['values']['name']);
+    $this->config->set('age', $form_state['values']['age']);
+
+    $this->config->save();
+}
+                    </code></pre>
+                </section>
+            </section>
+
+            <!-- DEPENDENCY ENJECTION -->
+            <section>
+                <section>
+                    <h2>Dependency Injection</h2>
+                    <p class="fragment">It's not as scary as it sounds</p>
+                </section>
+                <section>
+                    <pre><code>
+class Status {
+  public function show() {
+    $status = db_query('SELECT status from {table}')->fetchOne();
+    return $status;
+  }
+}
+
+$status = new Status();
+print $status->show();
+                    </code></pre>
+                </section>
+                <section>
+                    <pre><code>
+class Status {
+  protected $db;
+
+  pubic function __construct(Database $db) {
+    $this->db = $db;
+  }
+
+  public function show() {
+    $status = $this->db->query('SELECT status from {table}')->fetchOne();
+    return $status;
+  }
+}
+
+$db = new Database();
+$status = new Status($db);
+print $status->show();
+                    </code></pre>
+                </section>
+                <section>
+                    <pre><code>
+class Status {
+  protected $db;
+
+  pubic function __construct(DatabaseInterface $db) {
+    $this->db = $db;
+  }
+
+  public function show() {
+    $status = $this->db->query('SELECT status from {table}')->fetchOne();
+    return $status;
+  }
+}
+
+$db = new Database();
+$status = new Status($db);
+print $status->show();
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>Dependency Injection "Container"</h2>
+                    <ul>
+                        <li class="fragment">Place were you wire that stuff up in advance</li>
+                        <li class="fragment">Scariest possible name for an array of objects</li>
+                    </ul>
+                    <pre class="fragment"><code>
+$status = $container->get('status');
+print $status->show();
+                    </code></pre>
+                </section>
+                <section>
+                    <h2>Dependency Injection Container</h2>
+                    <ul>
+                        <li class="fragment">You'll <em>almost</em> never interact with it directly</li>
+                        <li class="fragment">Configure via... YAML</li>
+                        <li class="fragment">Your class <em>should not</em> know about it</li>
+                        <li class="fragment">Focus on testability and swappability</li>
+                    </ul>
+                </section>
+            </section>
         </div>
 
     </div>

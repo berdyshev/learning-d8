@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic,700italic&subset=latin,cyrillic);
 
 body {
   background: #415b77;
@@ -57,6 +57,10 @@ body {
 
 .reveal ul li, .reveal pre code {
   line-height: 1.5em;
+}
+
+.reveal pre code {
+  max-height: none;
 }
 
 .reveal a:not(.image), .reveal a:not(.image) {
