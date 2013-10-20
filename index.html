@@ -230,20 +230,22 @@ return t('My module list page');
                 </section>
                 <section>
                     <h2>CMI</h2>
-                    <ul>
-                        <li>Configuration is everything users and editors do not write</li>
-                        <li>
-                            Usual Suspects:
-                            <ul>
-                                <li>views</li>
-                                <li>content types</li>
-                                <li>views modes</li>
-                                <li>image styles</li>
-                                <li>permissions</li>
-                                <li>settings</li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <div>Configuration is everything users and editors do not write
+                        <ul>
+                            <li class="fragment">Simple static data (settings like site name)</li>
+                            <li class="fragment">ConfigEntities 
+                                <ul>
+                                    <li>views</li>
+                                    <li>content types</li>
+                                    <li>view modes</li>
+                                    <li>image styles</li>
+                                    <li>permissions</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>&nbsp;</p>
+                    <p class="fragment">More information can be found here: <a href="https://drupal.org/node/1667894">https://drupal.org/node/1667894</a></p>
                 </section>
                 <section>
                     <h2>Config in the Files!</h2>
@@ -271,6 +273,35 @@ settings:
 status: '1'
 langcode: en</code></pre>
                 </section>
+                <section>
+                    <h2>Simple Config</h2>
+                    <div class="fragment">Get $config in Drupal 8 (best practice):
+                    <pre><code>$config = \Drupal::config('module.settings');</code></pre></div>
+                    <p>&nbsp;</p>
+                    <table class="two-col fragment">
+                        <thead>
+                            <tr><th>Drupal 7</th><th>Drupal 8</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><pre><code class="php">variable_get('var_name');</code></pre></td>
+                                <td><pre><code>$config->get('var_name');</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><pre><code class="php">variable_set('var_name');</code></pre></td>
+                                <td><pre><code>$config->set('var_name')->save();</code></pre></td>
+                            </tr>
+                            <tr>
+                                <td><pre><code class="php">variable_del('var_name');</code></pre></td>
+                                <td>
+                                    <pre><code>$config->clear('var_name')->save();</code></pre>
+                                    <pre><code>\Drupal::config('module.settings')->delete();</code></pre>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                
             </section>
 
             <!-- FORMS and CONFIGURATION -->
@@ -294,6 +325,13 @@ langcode: en</code></pre>
                 </section>
                 <section>
                     <h2>Configuration schema</h2>
+                    <ul class="fragment">
+                        <li>Used to define you config data</li>
+                        <li>Needed to enable multilingual support</li>
+                        <li>Needed to provide actual translation forms</li>
+                        <li>maybe something else :-)</li>
+                    </ul>
+                    <div class="fragment">
                     <pre><code>mymodule/config/schema/mymodule.settings.yml</code></pre>
 <pre><code>mymodule.settings:
     type: mapping
@@ -305,6 +343,8 @@ langcode: en</code></pre>
         age:
             type: integer
             label: 'Age'</code></pre>
+                    </div>
+                    <p class="fragment">See more details about data types: <a href="https://drupal.org/node/1905070">https://drupal.org/node/1905070</a></p>
                 </section>
                 <section>
                     <h2>Default values for settings</h2>
@@ -312,6 +352,11 @@ langcode: en</code></pre>
                     <pre><code>mymodule/config/mymodule.settings.yml</code></pre>
                     <pre><code>name: 'John Doe'
 age: 40</code></pre>
+                    <p>&nbsp;</p>
+                    <ul class="fragment">
+                        <li>You can create in this dir as much config files as you need (for contrib modules as well)</li>
+                        <li>To debug config schema and values there is module <a href="https://drupal.org/project/config_inspector">Configuration inspector</a></li>
+                    </ul>
                 </section>
                 <section>
                     <h2>ConfigFormBase</h2>
@@ -375,6 +420,43 @@ public function submitForm(array &$form, array &$form_state) {
     $this->config->save();
 }
                     </code></pre>
+                </section>
+            </section>
+
+            <!-- STATE API -->
+            <section>
+                <section>
+                    <h2>State API</h2>
+                </section>
+                <section>
+                    <h2>State vs Config</h2>
+                    <ul>
+                        <li class="fragment">It is specific to an individual environment</li>
+                        <li class="fragment">You will never want to deploy it between environments</li>
+                    </ul>
+                    <p>&nbsp;</p>
+                    <p class="fragment">A good example of state is the last time cron was run. This is specific to an environment and has no use in deployment.</p>
+                </section>
+                <section>
+                    <h2>Examples</h2>
+                    <div class="fragment">Get a value: 
+                    <pre><code>$val = \Drupal::state()->get('key');</code></pre>
+                    </div>
+                    <div class="fragment">Get all key/value pairs: 
+                    <pre><code>$val = \Drupal::state()->getAll();</code></pre>
+                    </div>
+                    <div class="fragment">Set a value: 
+                    <pre><code>\Drupal::state()->set('key','value');</code></pre>
+                    </div>
+                    <div class="fragment">Set multiple values:
+                    <pre><code>\Drupal::state()->setMultiple($keyvalues);</code></pre>
+                    </div>
+                    <div class="fragment">Set a value if not already set:
+                    <pre><code>\Drupal::state()->setIfNotExists('key','value');</code></pre>
+                    </div>
+                    <div class="fragment">Delete a value:
+                    <pre><code>\Drupal::state()->delete('key');</code></pre>
+                    </div>
                 </section>
             </section>
 
@@ -458,6 +540,8 @@ print $status->show();
                     </ul>
                 </section>
             </section>
+
+
         </div>
 
     </div>
